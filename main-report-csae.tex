@@ -1,0 +1,164 @@
+\documentclass[14pt, oneside]{altsu-report}
+
+\worktype{Курсовая работа (2 курс)}
+\title{Рост дендрита на Python}
+\author{С.\,С.~Авдеев}
+\groupnumber{5.205-2}
+\GradebookNumber{1337}
+\supervisor{И.\,А.~Шмаков}
+\supervisordegree{Старший преподаватель}
+\ministry{Министерство науки и высшего образования}
+\country{Российской Федерации}
+\fulluniversityname{ФГБОУ ВО Алтайский государственный университет}
+\institute{Институт цифровых технологий, электроники и физики}
+\department{Кафедра вычислительной техники и электроники}
+\departmentchief{В.\,В.~Пашнев}
+\departmentchiefdegree{к.ф.-м.н., доцент}
+\shortdepartment{ВТиЭ}
+\abstractRU{Пока счётчик работает не правильно! Поправьте количество рисунков и таблиц в cls-файле.}
+\keysRU{Курсовая работа, рост дендрита, объектно-ориентированное программирование}
+\keysEN{computer simulation, distributed version control}
+
+\date{\the\year}
+
+% Подключение файлов с библиотекой.
+\addbibresource{graduate-students.bib}
+
+% Пакет для отладки отступов.
+%\usepackage{showframe}
+
+\begin{document}
+\maketitle
+
+\setcounter{page}{2}
+\makeabstract
+\tableofcontents
+
+\chapter*{Введение}
+\phantomsection\addcontentsline{toc}{chapter}{ВВЕДЕНИЕ}
+
+\textbf{Актуальность}
+\newline
+Актуальность данной работы заключается в изучении парадигмы объектно-ориентированного программирования (ООП) для разработки программы, симулирующей рост дендрита. Так как парадигма объекто-ориентированного программирования сейчас используется повсеместно, то её изучение и освоение в будущем поможет в решении различных задач и разработке проектов, ориентированных на ООП.
+\newline
+\textbf{Цель}
+\newline
+Разработать программу с графическим интерфейсом, которая симулирует процесс роста дендрита, используя язык программирования Python и его графическую библиотеку TKinter.
+\newline
+\textbf{Задачи:}
+\begin{enumerate}
+\item Изучить понятие "Рост дендрита"
+\item Изучить и освоить парадигму объекто-ориентированного прогрммирования
+\item Изучить и освоить графическую библиотеку TKinter 
+\item Разработать программу, симулирующую рост дендрита
+\end{enumerate}
+
+% Подключение первой главы (теория):
+\include{chapter-1-report-csae.tex}
+% Подключение второй главы (практическая часть):
+\include{chapter-2-report-csae.tex}
+% Подключение третий главы (практическая часть с тестированием:
+\include{chapter-3-report-csae.tex}
+
+\chapter{Теоретичекская часть}
+В этом разделе мы разберём суть работы, условия и задачи. Также изучим необходимые компоненты и теорию, необходимые для выыполнения работы.
+\section{Постановка задачи и условий}
+\section{Рост дендрита}
+\section{Язык программирования Python}
+\section{Объектно-ориентированное программирование}
+
+\chapter{Практическая часть}
+В этом разделе мы будем применять полученные знания из теории, которую мы изучили раньше. С помощью этих знаний мы разработаем программу "Рост дендрита" на языке программирования Python
+
+
+\chapter*{Заключение}
+\phantomsection\addcontentsline{toc}{chapter}{ЗАКЛЮЧЕНИЕ}
+
+\begin{enumerate}
+\item Пример ссылки на электронный источник~\cite{wikiRUPython;
+wikiRUDendrit; wikiRUООП; wikiRUTKinter; wikiRUPyCharm}.
+\item Пример ссылки на книгу одного автора~\cite{book1author}.
+\item Пример ссылки на книгу 5-ти и более авторов~\cite{book5author}.
+\end{enumerate}
+
+\newpage
+\phantomsection\addcontentsline{toc}{chapter}{СПИСОК ИСПОЛЬЗОВАННОЙ ЛИТЕРАТУРЫ}
+\printbibliography[title={Список использованной литературы}]
+
+\appendix
+\newpage
+\chapter*{\raggedleft\label{appendix1}Приложение}
+\phantomsection\addcontentsline{toc}{chapter}{ПРИЛОЖЕНИЕ}
+%\section*{\centering\label{code:appendix}Текст программы}
+
+\begin{center}
+\label{code:appendix}Код программы "Рост дендрита"
+\end{center}
+
+\begin{minted}[linenos, fontsize=\footnotesize,numbersep=5pt, frame=lines, framesep=2mm]{python}
+import tkinter as tk
+import random
+
+# Constants
+WIDTH, HEIGHT = 1000, 1000  # Size of the glass in cells
+PARTICLE_COLOR = 'blue'
+BACKGROUND_COLOR = 'white'
+NUM_PARTICLES = 1000
+PARTICLE_SIZE = 5
+
+class Particle:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.docked = False
+
+    def move(self):
+        if not self.docked:
+            direction = random.choice(['up', 'down', 'left', 'right'])
+            if direction == 'up' and self.y > 0:
+                self.y -= 1
+            elif direction == 'down' and self.y < HEIGHT - 1:
+                self.y += 1
+            elif direction == 'left' and self.x > 0:
+                self.x -= 1
+            elif direction == 'right' and self.x < WIDTH - 1:
+                self.x += 1
+
+            # Check if the particle has reached the bottom
+            if self.y == HEIGHT - 1:
+                self.docked = True
+
+class DendriteGrowthApp:
+    def __init__(self, root):
+        self.root = root
+        self.canvas = tk.Canvas(root, width=WIDTH*PARTICLE_SIZE, height=HEIGHT*PARTICLE_SIZE, bg=BACKGROUND_COLOR)
+        self.canvas.pack()
+        self.particles = [Particle(WIDTH // 2, 0) for _ in range(NUM_PARTICLES)]
+        self.docked_particles = set()
+
+    def update(self):
+        self.canvas.delete('all')
+        for particle in self.particles:
+            if particle.docked:
+                self.docked_particles.add(particle)
+            else:
+                particle.move()
+                self.canvas.create_rectangle(
+                    particle.x * PARTICLE_SIZE, particle.y * PARTICLE_SIZE,
+                    (particle.x + 1) * PARTICLE_SIZE, (particle.y + 1) * PARTICLE_SIZE,
+                    fill=PARTICLE_COLOR
+                )
+        self.root.after(100, self.update)  # Schedule the next update
+
+def main():
+    root = tk.Tk()
+    root.title("Dendrite Growth Simulation")
+    app = DendriteGrowthApp(root)
+    app.update()
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+\end{minted}
+\end{document}
+
